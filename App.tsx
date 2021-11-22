@@ -1,21 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { LogBox } from 'react-native'
+import {NavigationContainer} from '@react-navigation/native';
+import {NativeBaseProvider} from 'native-base';
+import {createStackNavigator} from '@react-navigation/stack';
+import Signed from './src/screens/Signed/Signed';
+import {Login} from './src/screens/Login';
+import { Home } from './src/screens/Home';
 
-export default function App() {
+LogBox.ignoreLogs(['NativeBase: The contrast ratio of 1:1']);
+
+const Stack = createStackNavigator();
+
+const MyStack = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{headerShown: false}}
+      />
+      <Stack.Screen
+        name="Signed"
+        component={Signed}
+        options={{headerShown: false}}
+      />
+    </Stack.Navigator>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+  return (
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <MyStack />
+      </NavigationContainer>
+    </NativeBaseProvider>
+  );
+};
+
+export default App;
