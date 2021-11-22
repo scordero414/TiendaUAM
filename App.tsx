@@ -1,13 +1,12 @@
-import React from 'react';
-import { LogBox } from 'react-native'
-import {NavigationContainer} from '@react-navigation/native';
-import {NativeBaseProvider} from 'native-base';
-import {createStackNavigator} from '@react-navigation/stack';
-import Signed from './src/screens/Signed/Signed';
-import {Login} from './src/screens/Login';
-import { Home } from './src/screens/Home';
+import React from "react";
+import { LogBox } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { NativeBaseProvider } from "native-base";
+import { createStackNavigator } from "@react-navigation/stack";
+import Signed from "./src/screens/Signed/Signed";
+import { Login } from "./src/screens/Login";
 
-LogBox.ignoreLogs(['NativeBase: The contrast ratio of 1:1']);
+LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1"]);
 
 const Stack = createStackNavigator();
 
@@ -17,12 +16,12 @@ const MyStack = () => {
       <Stack.Screen
         name="Login"
         component={Login}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="Signed"
         component={Signed}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );

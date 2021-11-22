@@ -1,10 +1,16 @@
-import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Home} from '../screens/Home';
-import {User} from '../screens/Signed/User';
-import {ShoppingCart} from '../screens/Signed/ShoppingCart';
-import { Icon } from 'native-base'
-import { Ionicons, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Home } from "../screens/Home";
+import { User } from "../screens/Signed/User";
+import { ShoppingCart } from "../screens/Signed/ShoppingCart";
+import { Icon } from "native-base";
+import {
+  Ionicons,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
+import Svg, { Path } from "react-native-svg";
+import { HomePageIcon, ShoppingCartIcon, UserIcon } from "../assets/icons/TabIcons";
 
 const Tab = createBottomTabNavigator();
 
@@ -16,7 +22,7 @@ const MyTabs = () => {
         component={Home}
         options={() => ({
           tabBarShowLabel: false,
-          tabBarIcon: () => <MaterialIcons size={24} name='home' />,
+          tabBarIcon: () => <HomePageIcon />,
         })}
       />
       <Tab.Screen
@@ -24,7 +30,7 @@ const MyTabs = () => {
         component={ShoppingCart}
         options={() => ({
           tabBarShowLabel: false,
-          tabBarIcon: () => <MaterialIcons size={24} name='shopping-cart' />,
+          tabBarIcon: () => <ShoppingCartIcon />,
         })}
       />
       <Tab.Screen
@@ -32,7 +38,7 @@ const MyTabs = () => {
         component={User}
         options={() => ({
           tabBarShowLabel: false,
-          tabBarIcon: () => <MaterialIcons size={24} name='person' />,
+          tabBarIcon: () => <UserIcon />,
         })}
       />
     </Tab.Navigator>
