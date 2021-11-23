@@ -19,8 +19,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export const Home = () => {
   return (
-    <SafeAreaView>
-      <ScrollView>
+    <SafeAreaView  style={{backgroundColor: "white"}}>
+      <ScrollView bgColor={COLORS.WHITE}>
         <VStack mx={6} my={3}>
           <VStack width="100%" alignItems="center">
             <HStack space={2} mx={6}>
