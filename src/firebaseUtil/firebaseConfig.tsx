@@ -1,12 +1,11 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+const firebase = require("firebase");
+// Required for side-effects
+require("firebase/firestore");
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = initializeApp({
+const firebaseConfig = {
   apiKey: "AIzaSyBGKkSqZspG4xaPqG5Q-ihYITQi9Vzr6RU",
   authDomain: "tienda-uam.firebaseapp.com",
   projectId: "tienda-uam",
@@ -14,10 +13,12 @@ const firebaseConfig = initializeApp({
   messagingSenderId: "546473739872",
   appId: "1:546473739872:web:8912d553b921c543df2505",
   measurementId: "G-8EQYN0BZCT"
-});
+};
 
-const db = getFirestore();
+const fire = firebase.initializeApp(firebaseConfig);
 
-export { db }
+const store = fire.firestore()
+
+export { store }
 
 

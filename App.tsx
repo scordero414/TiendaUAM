@@ -6,7 +6,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Signed from "./src/screens/Signed/Signed";
 import { Login } from "./src/screens/Login";
 
-LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1"]);
+LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1", "Setting a timer"]);
+// LogBox.ignoreLogs();
+
 
 const Stack = createStackNavigator();
 

@@ -17,9 +17,26 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { ScrollCategories } from "../components/ScrollCategories";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { store } from "../firebaseUtil/firebaseConfig";
+
 export const Home = () => {
+
+    const createProduct = () => {
+        store.collection("products").add({
+            name: "Tokyo",
+            country: "Japan"
+        })
+        .then((docRef: any) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error: string) => {
+            console.error("Error adding document: ", error);
+        });
+        
+    }
+
   return (
-    <SafeAreaView  style={{backgroundColor: "white"}}>
+    <SafeAreaView style={{ backgroundColor: "white" }}>
       <ScrollView bgColor={COLORS.WHITE}>
         <VStack mx={6} my={3}>
           <VStack width="100%" alignItems="center">
@@ -45,6 +62,7 @@ export const Home = () => {
                 bgColor={COLORS.BLUE}
                 variant="solid"
                 borderRadius={100}
+                onPress={()=>createProduct()}
                 _icon={{
                   as: MaterialIcons,
                   name: "search",
