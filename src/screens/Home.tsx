@@ -10,6 +10,7 @@ import {
   Text,
   Button,
   Image,
+  FlatList,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { COLORS } from "../resources/Constants";
@@ -19,15 +20,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { store } from "../firebaseUtil/firebaseConfig";
 import { Product } from "../models/Product";
+import { LogBox } from "react-native";
 
 export const Home = () => {
   const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     getProducts();
   }, []);
+
   useEffect(() => {
     console.log(products);
+    // console.log(formatCurrency(2000))
   }, [products]);
 
   const getProducts = async () => {
@@ -64,6 +69,14 @@ export const Home = () => {
         console.error("Error adding document: ", error);
       });
   };
+
+//   const formatCurrency = (number: number) => {
+//     const formatted = new Intl.NumberFormat("es-CO", {
+//       style: "currency",
+//       currency: "COP",
+//     }).format(number);
+//     return formatted;
+//   };
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -122,78 +135,46 @@ export const Home = () => {
                 Ver todos
               </Button>
             </HStack>
-            <HStack space={2} justifyContent="space-between" mt={4}>
-              <Box>
-                <Image
-                  source={{
-                    uri: "https://static.dafiti.com.co/p/calvin-klein-9676-0602701-1-product.jpg",
-                  }}
-                  alt="Alternate Text"
-                  size="160"
-                  rounded={5}
-                  height={250}
-                  resizeMode="cover"
-                />
-                <VStack my={2}>
-                  <Text>Saco gris UAM</Text>
-                  <Text color={COLORS.LIGHT_GRAY}>Saco unisex</Text>
-                  <Text color={COLORS.BLUE}>$70.000</Text>
-                </VStack>
-              </Box>
-              <Box>
-                <Image
-                  source={{
-                    uri: "https://static.dafiti.com.co/p/gap-5263-4066221-1-product.jpg",
-                  }}
-                  alt="Alternate Text"
-                  size="160"
-                  resizeMode="cover"
-                  rounded={5}
-                  height={250}
-                />
-                <VStack my={2}>
-                  <Text>Hoodie Rojo UAM</Text>
-                  <Text color={COLORS.LIGHT_GRAY}>Hoodie para hombre</Text>
-                  <Text color={COLORS.BLUE}>$75.000</Text>
-                </VStack>
-              </Box>
-            </HStack>
-            <HStack space={2} justifyContent="space-between" mt={4}>
-              <Box>
-                <Image
-                  source={{
-                    uri: "https://static.dafiti.com.co/p/calvin-klein-9676-0602701-1-product.jpg",
-                  }}
-                  alt="Alternate Text"
-                  size="160"
-                  rounded={5}
-                  height={250}
-                  resizeMode="cover"
-                />
-                <VStack my={2}>
-                  <Text>Saco gris UAM</Text>
-                  <Text color={COLORS.LIGHT_GRAY}>Saco unisex</Text>
-                  <Text color={COLORS.BLUE}>$70.000</Text>
-                </VStack>
-              </Box>
-              <Box>
-                <Image
-                  source={{
-                    uri: "https://static.dafiti.com.co/p/gap-5263-4066221-1-product.jpg",
-                  }}
-                  alt="Alternate Text"
-                  size="160"
-                  resizeMode="cover"
-                  rounded={5}
-                  height={250}
-                />
-                <VStack my={2}>
-                  <Text>Hoodie Rojo UAM</Text>
-                  <Text color={COLORS.LIGHT_GRAY}>Hoodie para hombre</Text>
-                  <Text color={COLORS.BLUE}>$75.000</Text>
-                </VStack>
-              </Box>
-            </HStack>
+
+            {/* ------------------------------------------------------ */}
+
+            {products !== null && (
+              <FlatList
+                scrollEnabled={true}
+                columnWrapperStyle={{ justifyContent: "space-between" }}
+                data={products}
+                numColumns={2}
+                py={2}
+                renderItem={({ item }) => (
+                  <Box>
+                    <Image
+                      source={{
+                        uri: item.image,
+                      }}
+                      alt="Alternate Text"
+                      size="160"
+                      rounded={5}
+                      height={250}
+                      resizeMode="cover"
+                    />
+                    <VStack my={2}>
+                      <Text>
+                        {item.name.length > 21
+                          ? item.name.substring(0, 21 - 3) + "..."
+                          : item.name}
+                      </Text>
+                      <Text color={COLORS.LIGHT_GRAY}>{item.color}</Text>
+                      <Text color={COLORS.BLUE}>
+                        {item.price}
+                      </Text>
+                    </VStack>
+                  </Box>
+                )}
+                keyExtractor={(item) => item.id}
+              />
+            )} 
+
+            {/* ------------------------------------------------------ */}
           </Box>
         </VStack>
       </ScrollView>
