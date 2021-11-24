@@ -1,3 +1,5 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case "ADD_PRODUCT":
@@ -12,6 +14,23 @@ const reducer = (state: any, action: any) => {
           (product: any) => product.id !== action.payload
         ),
       };
+    case "LOGIN":
+      AsyncStorage.setItem(
+        "google_auth",
+        JSON.stringify(action.payload)
+      ).then();
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "LOGOUT":
+      AsyncStorage.removeItem("google_auth").then();
+      return {
+        ...state,
+        user: {},
+      };
+
+
     default:
       return state;
   }

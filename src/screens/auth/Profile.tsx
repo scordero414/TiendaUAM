@@ -1,48 +1,37 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
 import { Props } from '../../models/props';
 import { User } from '../../models/user';
+import { logout } from '../../redux/actions';
 
 
 
 export const Profile = (props: Props) => {
 
+    const dispatch = useDispatch();
+
+    const user = useSelector((state: any) => state.user.user)
+
     const { navigation } = props;
 
-    const [user, setUser] = useState<User>({});
 
     useEffect(() => {
-        _getStorageDataHandler();
+        console.log(user);
     }, [])
 
-
-    const _getStorageDataHandler = () => {
-        AsyncStorage.getItem(
-            'google_auth'
-        ).then((data: any) => {
-            const storageData = JSON.parse(data);
-
-            setUser({
-                name: storageData.user.name,
-                email: storageData.user.email,
-                photoUrl: storageData.user.photoUrl
-            })
-        });
-    }
-
     const _logoutHandler = () => {
-        AsyncStorage.removeItem('google_auth').then();
         navigation.navigate('Auth');
+        dispatch(logout());
     }
 
     return (
         <View style={styles.container}>
             <View style={styles.contentCenter}>
                 <View style={styles.cardContainer}>
-                    <Text style={styles.text}>Name: {user.name}</Text>
-                    <Text style={styles.text}>Email: {user.email}</Text>
-
+                    <Text style={styles.text}>Name: {user?.name}</Text>
+                    <Text style={styles.text}>Email: {user?.email}</Text>
 
                     <TouchableOpacity
                         activeOpacity={0.7}
@@ -56,11 +45,11 @@ export const Profile = (props: Props) => {
                 </View>
 
                 {
-                    user.photoUrl
+                    user?.photoUrl
                         ?
                         <View style={styles.avatarContainer}>
                             <Image 
-                                source={{ uri: user.photoUrl }}
+                                source={{ uri: user?.photoUrl }}
                                 style={styles.avatarContainer}
                             />
                         </View>

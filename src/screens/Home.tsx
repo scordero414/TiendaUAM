@@ -21,8 +21,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { store } from "../firebaseUtil/firebaseConfig";
 import { Product } from "../models/Product";
 import { LogBox } from "react-native";
+import { useSelector } from "react-redux";
 
 export const Home = () => {
+
+  const user = useSelector((state: any) => state.user.user);
+
   const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
@@ -112,7 +116,7 @@ export const Home = () => {
               />
             </HStack>
           </VStack>
-
+          <Text mt={7} alignItems="flex-start" fontSize="md" bold> Hola, {user?.name}</Text>
           <Box>
             <Heading mt={7} alignItems="flex-start">
               Categorías
