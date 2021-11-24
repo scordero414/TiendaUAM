@@ -11,6 +11,7 @@ import {
   Button,
   Image,
   FlatList,
+  Spinner,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { COLORS } from "../resources/Constants";
@@ -23,14 +24,13 @@ import { useSelector } from "react-redux";
 import { getProducts, Product } from "../models/product";
 
 export const Home = () => {
-
   const user = useSelector((state: any) => state.user.user);
 
   const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    getProducts().then(products => setProducts(products))
+    getProducts().then((products) => setProducts(products));
   }, []);
 
   return (
@@ -68,7 +68,10 @@ export const Home = () => {
               />
             </HStack>
           </VStack>
-          <Text mt={7} alignItems="flex-start" fontSize="md" bold> Hola, {user?.name}</Text>
+          <Text mt={7} alignItems="flex-start" fontSize="md" bold>
+            {" "}
+            Hola, {user?.name}
+          </Text>
           <Box>
             <Heading mt={7} alignItems="flex-start">
               Categorías
@@ -93,7 +96,7 @@ export const Home = () => {
 
             {/* ------------------------------------------------------ */}
 
-            {products !== null && (
+            {products !== null ? (
               <FlatList
                 scrollEnabled={true}
                 columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -125,6 +128,10 @@ export const Home = () => {
                 )}
                 keyExtractor={(item) => item.id}
               />
+            ) : (
+              <Box py={200} alignItems="center">
+                <Spinner size="lg" color={COLORS.BLUE} />
+              </Box>
             )}
 
             {/* ------------------------------------------------------ */}

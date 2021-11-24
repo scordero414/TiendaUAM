@@ -37,7 +37,7 @@ const MyStack = () => {
       <Stack.Screen
         name="Signed"
         component={Signed}
-        options={{ headerShown: false }}
+        options={{ headerShown: false}}
       />
       <Stack.Screen
         name="Profile"
