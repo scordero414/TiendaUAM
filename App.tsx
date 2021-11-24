@@ -6,10 +6,11 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Signed from "./src/screens/Signed/Signed";
 import { Login } from "./src/screens/Login";
 import Navigation from "./src/screens/Navigation";
+import { Provider } from "react-redux";
+import { store } from "./src/redux/store";
 
 LogBox.ignoreLogs(["NativeBase: The contrast ratio of 1:1", "Setting a timer"]);
 // LogBox.ignoreLogs();
-
 
 const Stack = createStackNavigator();
 
@@ -31,17 +32,19 @@ const Stack = createStackNavigator();
 // };
 
 const App = () => {
-    return (
-        // <NativeBaseProvider>
-        //   <NavigationContainer>
-        //     <MyStack />
-        //   </NavigationContainer>
-        // </NativeBaseProvider>
+  return (
+    // <NativeBaseProvider>
+    //   <NavigationContainer>
+    //     <MyStack />
+    //   </NavigationContainer>
+    // </NativeBaseProvider>
 
-        <NativeBaseProvider>
-            <Navigation />
-        </NativeBaseProvider>
-    );
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <Navigation />
+      </NativeBaseProvider>
+    </Provider>
+  );
 };
 
 export default App;
