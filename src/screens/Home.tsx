@@ -11,6 +11,7 @@ import {
   Button,
   Image,
   FlatList,
+  Spinner,
 } from "native-base";
 import React, { useState, useEffect } from "react";
 import { COLORS } from "../resources/Constants";
@@ -18,68 +19,19 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { ScrollCategories } from "../components/ScrollCategories";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { store } from "../firebaseUtil/firebaseConfig";
-import { Product } from "../models/Product";
 import { LogBox } from "react-native";
 import { useSelector } from "react-redux";
+import { getProducts, Product } from "../models/product";
 
 export const Home = () => {
-
   const user = useSelector((state: any) => state.user.user);
 
   const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    getProducts();
+    getProducts().then((products) => setProducts(products));
   }, []);
-
-  useEffect(() => {
-    // console.log(props.navigation.userData);
-  }, [products]);
-
-  const getProducts = async () => {
-    const { docs } = await store.collection("products").get();
-    const arr = docs.map((item: any) => ({ id: item.id, ...item.data() }));
-    setProducts(arr);
-  };
-
-  const createProduct = () => {
-    const product: Product = {
-      name: "Camibuzo azul oscuro UAM",
-      category: ["ropa", "camibuzo"],
-      size: [
-        { size: "S", stock: 22 },
-        { size: "M", stock: 3 },
-        { size: "L", stock: 7 },
-      ],
-      description:
-        "qweqweqweqweqeqwewqqqqqqqqweqweqweqweqweqweqweqweqweqweqweqweqweqqweqwe",
-      color: "Azul oscuro",
-      image:
-        "https://static.dafiti.com.co/p/nautica-3232-4848601-1-product.jpg",
-      price: 1750000,
-      createdAt: new Date(),
-    };
-
-    store
-      .collection("products")
-      .add(product)
-      .then((docRef: any) => {
-        console.log("Document written with ID: ", docRef.id);
-      })
-      .catch((error: string) => {
-        console.error("Error adding document: ", error);
-      });
-  };
-
-  //   const formatCurrency = (number: number) => {
-  //     const formatted = new Intl.NumberFormat("es-CO", {
-  //       style: "currency",
-  //       currency: "COP",
-  //     }).format(number);
-  //     return formatted;
-  //   };
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -116,7 +68,10 @@ export const Home = () => {
               />
             </HStack>
           </VStack>
-          <Text mt={7} alignItems="flex-start" fontSize="md" bold> Hola, {user?.name}</Text>
+          <Text mt={7} alignItems="flex-start" fontSize="md" bold>
+            {" "}
+            Hola, {user?.name}
+          </Text>
           <Box>
             <Heading mt={7} alignItems="flex-start">
               Categorías
@@ -141,7 +96,7 @@ export const Home = () => {
 
             {/* ------------------------------------------------------ */}
 
-            {products !== null && (
+            {products !== null ? (
               <FlatList
                 scrollEnabled={true}
                 columnWrapperStyle={{ justifyContent: "space-between" }}
@@ -173,6 +128,10 @@ export const Home = () => {
                 )}
                 keyExtractor={(item) => item.id}
               />
+            ) : (
+              <Box py={200} alignItems="center">
+                <Spinner size="lg" color={COLORS.BLUE} />
+              </Box>
             )}
 
             {/* ------------------------------------------------------ */}

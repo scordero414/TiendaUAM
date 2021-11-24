@@ -10,7 +10,6 @@ export const StartUp = (props: Props) => {
 
     const dispatch = useDispatch();
 
-
     const { navigation } = props;
 
     const tryLogin = async () => {

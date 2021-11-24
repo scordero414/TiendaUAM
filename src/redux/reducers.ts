@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createUser } from "../models/user";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -18,7 +19,7 @@ const reducer = (state: any, action: any) => {
       AsyncStorage.setItem(
         "google_auth",
         JSON.stringify(action.payload)
-      ).then();
+      ).then(() => createUser(action.payload.user));
       return {
         ...state,
         user: action.payload,
