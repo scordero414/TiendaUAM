@@ -26,13 +26,12 @@ export const Home = () => {
   const [products, setProducts] = useState<Product[] | null>(null);
 
   useEffect(() => {
-    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
     getProducts();
   }, []);
 
   useEffect(() => {
-    console.log(products);
-    // console.log(formatCurrency(2000))
+    // console.log(props.navigation.userData);
   }, [products]);
 
   const getProducts = async () => {
@@ -70,13 +69,13 @@ export const Home = () => {
       });
   };
 
-//   const formatCurrency = (number: number) => {
-//     const formatted = new Intl.NumberFormat("es-CO", {
-//       style: "currency",
-//       currency: "COP",
-//     }).format(number);
-//     return formatted;
-//   };
+  //   const formatCurrency = (number: number) => {
+  //     const formatted = new Intl.NumberFormat("es-CO", {
+  //       style: "currency",
+  //       currency: "COP",
+  //     }).format(number);
+  //     return formatted;
+  //   };
 
   return (
     <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -164,15 +163,13 @@ export const Home = () => {
                           : item.name}
                       </Text>
                       <Text color={COLORS.LIGHT_GRAY}>{item.color}</Text>
-                      <Text color={COLORS.BLUE}>
-                        {item.price}
-                      </Text>
+                      <Text color={COLORS.BLUE}>{item.price}</Text>
                     </VStack>
                   </Box>
                 )}
                 keyExtractor={(item) => item.id}
               />
-            )} 
+            )}
 
             {/* ------------------------------------------------------ */}
           </Box>
