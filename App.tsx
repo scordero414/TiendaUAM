@@ -8,7 +8,6 @@ import { Login } from "./src/screens/Login";
 import { StartUp } from "./src/screens/auth/StartUp";
 import { Auth } from "./src/screens/auth/Auth";
 import { Home } from "./src/screens/Home";
-import { Profile } from "./src/screens/auth/Profile";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 
@@ -38,11 +37,6 @@ const MyStack = () => {
         name="Signed"
         component={Signed}
         options={{ headerShown: false}}
-      />
-      <Stack.Screen
-        name="Profile"
-        component={Profile}
-        options={{ headerShown: false }}
       />
     </Stack.Navigator>
   );
