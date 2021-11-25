@@ -22,11 +22,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LogBox } from "react-native";
 import { useSelector } from "react-redux";
 import { getProducts, Product } from "../models/product";
+import { Props } from "../models/props";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-export const Home = () => {
+export const Home = (props: Props) => {
   const user = useSelector((state: any) => state.user.user);
 
   const [products, setProducts] = useState<Product[] | null>(null);
+
+  const { navigation } = props;
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -115,15 +119,17 @@ export const Home = () => {
                       height={250}
                       resizeMode="cover"
                     />
-                    <VStack my={2}>
-                      <Text>
-                        {item.name.length > 21
-                          ? item.name.substring(0, 21 - 3) + "..."
-                          : item.name}
-                      </Text>
-                      <Text color={COLORS.LIGHT_GRAY}>{item.color}</Text>
-                      <Text color={COLORS.BLUE}>{item.price}</Text>
-                    </VStack>
+                    <TouchableOpacity onPress={()=> navigation.navigate("Product", item) }>
+                      <VStack my={2}>
+                        <Text>
+                          {item.name.length > 21
+                            ? item.name.substring(0, 21 - 3) + "..."
+                            : item.name}
+                        </Text>
+                        <Text color={COLORS.LIGHT_GRAY}>{item.color}</Text>
+                        <Text color={COLORS.BLUE}>{item.price}</Text>
+                      </VStack>
+                    </TouchableOpacity>
                   </Box>
                 )}
                 keyExtractor={(item) => item.id}

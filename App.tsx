@@ -11,6 +11,7 @@ import { Home } from "./src/screens/Home";
 import { Profile } from "./src/screens/auth/Profile";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
+import Product from "./src/screens/Product";
 
 LogBox.ignoreLogs([
   "NativeBase: The contrast ratio of 1:1",
@@ -38,6 +39,11 @@ const MyStack = () => {
         name="Signed"
         component={Signed}
         options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="Product"
+        component={Product}
+        // options={{ headerShown: false}}
       />
       <Stack.Screen
         name="Profile"
