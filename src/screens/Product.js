@@ -1,4 +1,4 @@
-import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Text, View } from "native-base";
+import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Text, View, VStack } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -40,11 +40,13 @@ const Product = (props) => {
                     <Heading alignSelf="flex-start" ml={5}>{product.name}</Heading>
 
                     <HStack space={4} my={5}>
-                        <HStack justifyContent="center" alignItems="center" space={2}>
+                        <HStack justifyContent="space-between"
+                            alignItems="center" space={2}>
                             <Text fontSize="lg" >Talla</Text>
                             <Select
                                 // selectedValue={service}
                                 minWidth="20"
+
                                 accessibilityLabel="Talla"
                                 placeholder="talla"
                                 _selectedItem={{
@@ -74,10 +76,11 @@ const Product = (props) => {
                             </Select>
                         </HStack>
 
-                        <HStack justifyContent="center" alignItems="center" space={2}>
+                        <HStack justifyContent="space-between" alignItems="center" space={2}>
                             <Text fontSize="lg" >Color</Text>
                             <Select
-                                // selectedValue={service}
+                                selectedValue={product.color}
+                                justifyContent="space-between"
                                 minWidth="30%"
                                 accessibilityLabel="Color"
                                 placeholder="Color"
@@ -87,28 +90,35 @@ const Product = (props) => {
                                         color: COLORS.WHITE
                                     },
                                     endIcon: <CheckIcon size="5" />,
+
                                 }}
                                 mt={1}
                             // onValueChange={(itemValue) => setService(itemValue)}
                             >
-                                <Select.Item label="Rojo" value="rojo" />
+                                <Select.Item label={product.color} value={product.color} />
                             </Select>
                         </HStack>
 
                     </HStack>
                     <Heading alignSelf="flex-start" ml={5}>Descripción</Heading>
-                    <Text alignSelf="flex-start" mx={5} my={3}>{product.description}</Text>
+                    <Text alignSelf="flex-start" mx={5} my={3} color={COLORS.GRAY}>{product.description}</Text>
 
                     <Heading alignSelf="flex-start" ml={5}>Información</Heading>
-                    <Text alignSelf="flex-start" mx={5} my={3}>{product.description}</Text>
+                    <Text alignSelf="flex-start" mx={5} my={3} color={COLORS.GRAY}>{product.description}</Text>
 
                     <Heading alignSelf="flex-start" ml={5}>Precio</Heading>
-                    <Text alignSelf="flex-start" mx={5} my={3}>{product.price}</Text>
+                    <Text alignSelf="flex-start" mx={5} my={3} color={COLORS.GRAY}>{product.price}</Text>
                 </Box>
 
             </Animated.ScrollView>
-            <Box width="100%" height={100}  bgColor={COLORS.WHITE} position="absolute" bottom={0} shadow={9}>
-                <Text>Hola</Text>
+            <Box width="100%" height={100} bgColor={COLORS.WHITE} position="absolute" bottom={0} shadow={9} justifyContent="center">
+                <HStack justifyContent="space-around">
+                    <VStack>
+                        <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
+                        <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
+                    </VStack>
+                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}}> AGREGAR</Button>
+                </HStack>
             </Box>
         </View>
     );
