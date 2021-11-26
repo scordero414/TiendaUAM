@@ -21,20 +21,28 @@ import { getProducts, Product } from "../../models/product";
 import { COLORS } from "../../resources/Constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Props } from "../../models/props";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProductAction } from "../../redux/actions";
+import { CartItem } from "../../models/cartItem";
 
 export const Cart = (props: Props) => {
-    const [products, setProducts] = useState<Product[] | null>(null);
+    const [products, setProducts] = useState<any>(null);
+
+    const cart: CartItem[]= useSelector((store: any) => store.cart)
+    const dispatch = useDispatch()
+
 
     useEffect(() => {
-        getProducts().then((products) => setProducts(products));
-    }, []);
+        console.log(cart.length)
+        setProducts(cart)
+    }, [cart])
 
-    const updateQuantityHandler = () => {
+    const updateQuantityHandler = (product: Product) => {
         // Actualizar el carrito
     };
 
     const removeItemHanlder = (id: string) => {
-        // Actualizar el carrito
+        dispatch(deleteProductAction(id))
     };
 
     const renderCartList = () => {
@@ -44,11 +52,11 @@ export const Cart = (props: Props) => {
                 contentContainerStyle={{
                     marginTop: 12,
                     paddingHorizontal: 24,
-                    paddingBottom: 95,
+                    paddingBottom: "10%",
                 }}
                 disableRightSwipe={true}
                 rightOpenValue={-75}
-                renderItem={(data, rowMap) => (
+                renderItem={(data: any, rowMap) => (
                     <View
                         bgColor={COLORS.DARK_WHITE}
                         height={130}
@@ -58,7 +66,7 @@ export const Cart = (props: Props) => {
                         <View justifyContent="center">
                             <HStack space={5}>
                                 <Image
-                                    source={{ uri: data.item.image }}
+                                    source={{ uri: data.item.product.image }}
                                     size="xl"
                                     resizeMode="contain"
                                     alignSelf="center"
@@ -66,10 +74,10 @@ export const Cart = (props: Props) => {
                                 />
                                 <VStack justifyContent="center">
                                     <Text color={COLORS.BLACK}>
-                                        {data.item.name}
+                                        {data.item.product.name}
                                     </Text>
                                     <Text color={COLORS.BLUE} mb={3} bold>
-                                        $ {data.item.price}
+                                        $ {data.item.product.price}
                                     </Text>
                                     <InputSpinner
                                         skin="clean"
@@ -84,14 +92,14 @@ export const Cart = (props: Props) => {
                                         value={2}
                                         rounded={false}
                                         showBorder={true}
-                                        onChange={updateQuantityHandler}
+                                        onChange={()=> updateQuantityHandler(data.item)}
                                     />
                                 </VStack>
                             </HStack>
                         </View>
                     </View>
                 )}
-                renderHiddenItem={(data, rowMap) => (
+                renderHiddenItem={(data:any, rowMap) => (
                     <View
                         bgColor="#f04048"
                         height={130}
@@ -110,7 +118,7 @@ export const Cart = (props: Props) => {
                                 />
                             }
                             onPress={() => {
-                                removeItemHanlder(data.item.name);
+                                removeItemHanlder(data.item.product.id);
                             }}
                         />
                     </View>
@@ -120,8 +128,7 @@ export const Cart = (props: Props) => {
     };
 
     return (
-        <SafeAreaView style={{ backgroundColor: COLORS.WHITE }}>
-            <VStack bgColor={COLORS.WHITE} space={10}>
+        <SafeAreaView style={{ backgroundColor: COLORS.WHITE, flex: 1}}>
                 <ScrollView>
                     {renderCartList()}
                 </ScrollView>
@@ -161,7 +168,6 @@ export const Cart = (props: Props) => {
                         </Button>
                     </HStack>
                 </Box>
-            </VStack>
         </SafeAreaView>
     );
 };

@@ -2,17 +2,21 @@ import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Tex
 import React, { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useDispatch } from "react-redux";
 import { Props } from "../models/props";
+import { addProductAction } from "../redux/actions";
 import { COLORS } from "../resources/Constants";
 
 const Product = (props) => {
     const [product, setProduct] = useState(props.route.params);
     const scrollA = useRef(new Animated.Value(0)).current;
+    const [size, setSize] = useState("")
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        product.size.forEach(item => {
-            console.log(item.size)
-        })
+        // product.size.forEach(item => {
+        //     console.log(item.size)
+        // })
     }, [])
 
     return (
@@ -57,8 +61,7 @@ const Product = (props) => {
                                     endIcon: <CheckIcon size="5" />,
                                 }}
                                 mt={1}
-
-                            // onValueChange={(itemValue) => setService(itemValue)}
+                                onValueChange={(itemValue) => setSize(itemValue)}
                             >
 
                                 {/* {
@@ -117,7 +120,7 @@ const Product = (props) => {
                         <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
                         <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
                     </VStack>
-                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}} > AGREGAR</Button>
+                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}} onPress={() => dispatch(addProductAction(product, size))}> AGREGAR</Button>
                 </HStack>
             </Box>
         </View>

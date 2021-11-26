@@ -3,6 +3,7 @@ import { store } from "../firebaseUtil/firebaseConfig";
 export interface Product {
     name: string, 
     category: string [],
+    id: string,
     size: {size: string, stock: number}[]
     description: string,
     color: string,

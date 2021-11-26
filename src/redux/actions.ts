@@ -1,9 +1,9 @@
 import { Product } from "../models/Product";
 import { User } from "../models/user";
 
-export const addProductAction = (product: Product) => ({
+export const addProductAction = (product: Product, size: string) => ({
   type: "ADD_PRODUCT",
-  payload: product,
+  payload: {product: product, size: size},
 });
 
 export const deleteProductAction = (productId: string) => ({
