@@ -7,8 +7,9 @@ import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { logout } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Caption, Title, TouchableRipple } from "react-native-paper";
-
-
+import { COLORS } from "../../resources/Constants";
+import { AntDesign } from "@expo/vector-icons";
+import { AddressIcon, CardsIcon, EditIcon, HistoryIcon, LogoutIcon, NotificationsIcon, WishListIcon } from "../../assets/icons/UserIcons";
 
 export const User = (props: Props) => {
     const dispatch = useDispatch();
@@ -27,9 +28,9 @@ export const User = (props: Props) => {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={{ backgroundColor: COLORS.WHITE, flex: 1 }}>
             <View style={styles.userInfoSection}>
-                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                <View style={{ flexDirection: "row", marginTop: 15 }}>
                     <Avatar.Image
                         source={{
                             uri: user?.photoUrl,
@@ -37,65 +38,103 @@ export const User = (props: Props) => {
                         size={80}
                     />
                     <View style={{ marginLeft: 20 }}>
-                        <Title style={[styles.title, {
-                            marginTop: 15,
-                            marginBottom: 5,
-                        }]}>{user?.givenName}</Title>
+                        <Title
+                            style={[
+                                styles.title,
+                                {
+                                    marginTop: 15,
+                                    marginBottom: 5,
+                                },
+                            ]}
+                        >
+                            {user?.givenName}
+                        </Title>
                         <Caption style={styles.caption}>{user?.email}</Caption>
                     </View>
                 </View>
             </View>
 
-
-            <View style={styles.menuWrapper}>            
-                <TouchableRipple onPress={() => { }}>
+            <View style={styles.menuWrapper}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="credit-card" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Editar perfil</Text>
+                        <HStack alignItems="center">
+                            {/* <Icon name="credit-card" color="#FF6347" size={25} /> */}
+                            <EditIcon />
+                            <Text style={styles.menuItemText}>
+                                Editar perfil
+                            </Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
 
-                <TouchableRipple onPress={() => { }}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="credit-card" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Dirección de envío</Text>
+                        <HStack alignItems="center">
+                            <AddressIcon />
+                            <Text style={styles.menuItemText}>
+                                Dirección de envío
+                            </Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
 
-
-                <TouchableRipple onPress={() => { }}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="share-outline" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Lista de deseos</Text>
+                        <HStack alignItems="center">
+                            <WishListIcon/>
+                            <Text style={styles.menuItemText}>
+                                Lista de deseos
+                            </Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => { }}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="account-check-outline" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Historial</Text>
+                        <HStack alignItems="center">
+                            <HistoryIcon/>
+                            <Text style={styles.menuItemText}>Historial</Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => { }}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="settings-outline" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Tarjetas</Text>
+                        <HStack alignItems="center">
+                            <CardsIcon/>
+                            <Text style={styles.menuItemText}>Tarjetas</Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => { }}>
+                <TouchableRipple onPress={() => {}}>
                     <View style={styles.menuItem}>
-                        <Icon name="settings-outline" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Notificaciones</Text>
+                        <HStack alignItems="center">
+                            <NotificationsIcon/>
+                            <Text style={styles.menuItemText}>
+                                Notificaciones
+                            </Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
-                <TouchableRipple onPress={() => { _logoutHandler() }}>
+                <TouchableRipple
+                    onPress={() => {
+                        _logoutHandler();
+                    }}
+                >
                     <View style={styles.menuItem}>
-                        <Icon name="settings-outline" color="#FF6347" size={25} />
-                        <Text style={styles.menuItemText}>Salir</Text>
+                        <HStack alignItems="center">
+                            <LogoutIcon/>
+                            <Text style={styles.menuItemText}>Salir</Text>
+                        </HStack>
+                        <AntDesign name="right" size={25} color="gray" />
                     </View>
                 </TouchableRipple>
             </View>
         </SafeAreaView>
-
     );
 };
 
@@ -112,17 +151,17 @@ const styles = StyleSheet.create({
 
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     },
 
     caption: {
         fontSize: 14,
         lineHeight: 14,
-        fontWeight: '500',
+        fontWeight: "500",
     },
-    
+
     row: {
-        flexDirection: 'row',
+        flexDirection: "row",
     },
 
     menuWrapper: {
@@ -130,19 +169,20 @@ const styles = StyleSheet.create({
     },
 
     menuItem: {
-        flexDirection: 'row',
+        flexDirection: "row",
         paddingVertical: 15,
         paddingHorizontal: 30,
+        justifyContent: "space-between",
+        alignItems: "center",
     },
     menuItemText: {
-        color: '#777777',
+        color: "#777777",
         marginLeft: 20,
-        fontWeight: '600',
+        fontWeight: "600",
         fontSize: 16,
         lineHeight: 26,
     },
 });
-
 
 // const styles = StyleSheet.create({
 //   container: {
