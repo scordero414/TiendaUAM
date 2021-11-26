@@ -20,8 +20,9 @@ import { FooterTotal } from "../../components/FooterTotal";
 import { getProducts, Product } from "../../models/product";
 import { COLORS } from "../../resources/Constants";
 import { AntDesign } from "@expo/vector-icons";
+import { Props } from "../../models/props";
 
-export const Cart = () => {
+export const Cart = (props: Props) => {
     const [products, setProducts] = useState<Product[] | null>(null);
 
     useEffect(() => {
@@ -154,6 +155,7 @@ export const Cart = () => {
                             bgColor={COLORS.YELLOW}
                             px={10}
                             _text={{ color: "#575757" }}
+                            onPress={()=> props.navigation.navigate("Checkout")}
                         >
                             CHECKOUT
                         </Button>

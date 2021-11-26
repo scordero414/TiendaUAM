@@ -11,6 +11,7 @@ import { Home } from "./src/screens/Home";
 import { Provider } from "react-redux";
 import { store } from "./src/redux/store";
 import Product from "./src/screens/Product";
+import Checkout from './src/screens/checkout/Checkout'
 
 LogBox.ignoreLogs([
   "NativeBase: The contrast ratio of 1:1",
@@ -43,6 +44,11 @@ const MyStack = () => {
         name="Product"
         component={Product}
         // options={{ headerShown: false}}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{ headerTitleAlign: 'center'}}
       />
     </Stack.Navigator>
   );

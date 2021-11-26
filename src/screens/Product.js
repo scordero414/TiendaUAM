@@ -117,7 +117,7 @@ const Product = (props) => {
                         <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
                         <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
                     </VStack>
-                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}}> AGREGAR</Button>
+                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}} > AGREGAR</Button>
                 </HStack>
             </Box>
         </View>
