@@ -43,7 +43,6 @@ const Product = (props) => {
                 )}
                 scrollEventThrottle={16}
             >
-
                 <View style={styles.bannerContainer}>
 
                     <Animated.Image
