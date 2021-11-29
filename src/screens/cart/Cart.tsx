@@ -9,6 +9,7 @@ import {
     Box,
     Button,
     ScrollView,
+    Badge,
 } from "native-base";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
@@ -28,14 +29,15 @@ import { CartItem } from "../../models/cartItem";
 export const Cart = (props: Props) => {
     const [products, setProducts] = useState<any>(null);
 
-    const cart: CartItem[]= useSelector((store: any) => store.cart)
-    const dispatch = useDispatch()
-
+    const cart: CartItem[] = useSelector((store: any) => store.cart);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(cart.length)
-        setProducts(cart.map((_: CartItem, i: number) => ({ ..._, key: `${i}`})))
-    }, [cart])
+        console.log(cart.length);
+        setProducts(
+            cart.map((_: CartItem, i: number) => ({ ..._, key: `${i}` }))
+        );
+    }, [cart]);
 
     const updateQuantityHandler = (product: Product) => {
         // Actualizar el carrito
@@ -50,17 +52,19 @@ export const Cart = (props: Props) => {
     const deleteRow = (rowMap: any, rowKey: any, id: string) => {
         closeRow(rowMap, rowKey);
         const newData = [...products];
-        const prevIndex = products.findIndex((item: any) => item.key === rowKey);
+        const prevIndex = products.findIndex(
+            (item: any) => item.key === rowKey
+        );
         newData.splice(prevIndex, 1);
         setProducts(newData);
     };
 
     const goCheckout = () => {
-        dispatch(updateProductsAction(products))
-        props.navigation.navigate("Checkout")
-    }
+        dispatch(updateProductsAction(products));
+        props.navigation.navigate("Checkout");
+    };
 
-    const renderCartList = (productsData:CartItem[]) => {
+    const renderCartList = (productsData: CartItem[]) => {
         return (
             <SwipeListView
                 data={productsData}
@@ -92,9 +96,12 @@ export const Cart = (props: Props) => {
                                     <Text color={COLORS.BLACK}>
                                         {data.item.product.name}
                                     </Text>
-                                    <Text color={COLORS.BLUE} mb={3} bold>
-                                        $ {data.item.product.price}
-                                    </Text>
+                                    <HStack mb={3} justifyContent="space-between">
+                                        <Text color={COLORS.BLUE}  bold>
+                                            $ {data.item.product.price}
+                                        </Text>
+                                        <Badge alignSelf="flex-end" colorScheme="info">{data.item.size}</Badge>
+                                    </HStack>
                                     <InputSpinner
                                         skin="clean"
                                         height={30}
@@ -108,14 +115,16 @@ export const Cart = (props: Props) => {
                                         value={2}
                                         rounded={false}
                                         showBorder={true}
-                                        onChange={()=> updateQuantityHandler(data.item)}
+                                        onChange={() =>
+                                            updateQuantityHandler(data.item)
+                                        }
                                     />
                                 </VStack>
                             </HStack>
                         </View>
                     </View>
                 )}
-                renderHiddenItem={(data:any, rowMap) => (
+                renderHiddenItem={(data: any, rowMap) => (
                     <View
                         bgColor="#f04048"
                         height={130}
@@ -134,7 +143,11 @@ export const Cart = (props: Props) => {
                                 />
                             }
                             onPress={() => {
-                                deleteRow(rowMap, data.item.key, data.item.product.id)
+                                deleteRow(
+                                    rowMap,
+                                    data.item.key,
+                                    data.item.product.id
+                                );
                                 // removeItemHanlder(data.item.product.id);
                             }}
                         />
@@ -145,46 +158,44 @@ export const Cart = (props: Props) => {
     };
 
     return (
-        <SafeAreaView style={{ backgroundColor: COLORS.WHITE, flex: 1}}>
-                <ScrollView>
-                    {renderCartList(products)}
-                </ScrollView>
-                {/* <FooterTotal
+        <SafeAreaView style={{ backgroundColor: COLORS.WHITE, flex: 1 }}>
+            <ScrollView>{renderCartList(products)}</ScrollView>
+            {/* <FooterTotal
                     subTotal={36.9}
                     shippingFee={2.78}
                     total={40.5}
                     onPress={() => {}}
                 /> */}
-                <Box
-                    width="100%"
-                    height={100}
-                    bgColor={COLORS.WHITE}
-                    position="absolute"
-                    bottom={0}
-                    shadow={9}
-                    justifyContent="center"
-                >
-                    <HStack justifyContent="space-around">
-                        <VStack>
-                            <Text color={COLORS.GRAY} fontSize="md">
-                                TOTAL
-                            </Text>
-                            <Text bold color={COLORS.BLUE} fontSize="lg">
-                                $ 26000
-                            </Text>
-                        </VStack>
-                        <Button
-                            variant="solid"
-                            colorScheme="yellow"
-                            bgColor={COLORS.YELLOW}
-                            px={10}
-                            _text={{ color: "#575757" }}
-                            onPress={()=> goCheckout()}
-                        >
-                            CHECKOUT
-                        </Button>
-                    </HStack>
-                </Box>
+            <Box
+                width="100%"
+                height={100}
+                bgColor={COLORS.WHITE}
+                position="absolute"
+                bottom={0}
+                shadow={9}
+                justifyContent="center"
+            >
+                <HStack justifyContent="space-around">
+                    <VStack>
+                        <Text color={COLORS.GRAY} fontSize="md">
+                            TOTAL
+                        </Text>
+                        <Text bold color={COLORS.BLUE} fontSize="lg">
+                            $ 26000
+                        </Text>
+                    </VStack>
+                    <Button
+                        variant="solid"
+                        colorScheme="yellow"
+                        bgColor={COLORS.YELLOW}
+                        px={10}
+                        _text={{ color: "#575757" }}
+                        onPress={() => goCheckout()}
+                    >
+                        CHECKOUT
+                    </Button>
+                </HStack>
+            </Box>
         </SafeAreaView>
     );
 };

@@ -30,8 +30,8 @@ const Product = (props) => {
             description: "¡Revisa tu carrito de compras!",
             placement: "top",
         })
-
     }
+    
     return (
         <View bgColor={COLORS.DARK_WHITE} >
 
@@ -131,7 +131,7 @@ const Product = (props) => {
                         <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
                         <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
                     </VStack>
-                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757' }} onPress={() => addProduct()}> AGREGAR</Button>
+                    <Button isDisabled={size?false:true}  variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757' }} onPress={() => addProduct()}> AGREGAR</Button>
                 </HStack>
             </Box>
         </View>
