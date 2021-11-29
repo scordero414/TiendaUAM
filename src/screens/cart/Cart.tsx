@@ -22,7 +22,7 @@ import { COLORS } from "../../resources/Constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Props } from "../../models/props";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProductAction } from "../../redux/actions";
+import { deleteProductAction, updateProductsAction } from "../../redux/actions";
 import { CartItem } from "../../models/cartItem";
 
 export const Cart = (props: Props) => {
@@ -34,25 +34,40 @@ export const Cart = (props: Props) => {
 
     useEffect(() => {
         console.log(cart.length)
-        setProducts(cart)
+        setProducts(cart.map((_: CartItem, i: number) => ({ ..._, key: `${i}`})))
     }, [cart])
 
     const updateQuantityHandler = (product: Product) => {
         // Actualizar el carrito
     };
 
-    const removeItemHanlder = (id: string) => {
-        dispatch(deleteProductAction(id))
+    const closeRow = (rowMap: any, rowKey: any) => {
+        if (rowMap[rowKey]) {
+            rowMap[rowKey].closeRow();
+        }
     };
 
-    const renderCartList = () => {
+    const deleteRow = (rowMap: any, rowKey: any, id: string) => {
+        closeRow(rowMap, rowKey);
+        const newData = [...products];
+        const prevIndex = products.findIndex((item: any) => item.key === rowKey);
+        newData.splice(prevIndex, 1);
+        setProducts(newData);
+    };
+
+    const goCheckout = () => {
+        dispatch(updateProductsAction(products))
+        props.navigation.navigate("Checkout")
+    }
+
+    const renderCartList = (productsData:CartItem[]) => {
         return (
             <SwipeListView
-                data={products}
+                data={productsData}
                 contentContainerStyle={{
                     marginTop: 12,
                     paddingHorizontal: 24,
-                    paddingBottom: "10%",
+                    paddingBottom: "25%",
                 }}
                 disableRightSwipe={true}
                 rightOpenValue={-75}
@@ -72,6 +87,7 @@ export const Cart = (props: Props) => {
                                     alignSelf="center"
                                     alt="img-product"
                                 />
+                                {/* <Text>{data.item.product.image}</Text> */}
                                 <VStack justifyContent="center">
                                     <Text color={COLORS.BLACK}>
                                         {data.item.product.name}
@@ -118,7 +134,8 @@ export const Cart = (props: Props) => {
                                 />
                             }
                             onPress={() => {
-                                removeItemHanlder(data.item.product.id);
+                                deleteRow(rowMap, data.item.key, data.item.product.id)
+                                // removeItemHanlder(data.item.product.id);
                             }}
                         />
                     </View>
@@ -130,7 +147,7 @@ export const Cart = (props: Props) => {
     return (
         <SafeAreaView style={{ backgroundColor: COLORS.WHITE, flex: 1}}>
                 <ScrollView>
-                    {renderCartList()}
+                    {renderCartList(products)}
                 </ScrollView>
                 {/* <FooterTotal
                     subTotal={36.9}
@@ -162,7 +179,7 @@ export const Cart = (props: Props) => {
                             bgColor={COLORS.YELLOW}
                             px={10}
                             _text={{ color: "#575757" }}
-                            onPress={()=> props.navigation.navigate("Checkout")}
+                            onPress={()=> goCheckout()}
                         >
                             CHECKOUT
                         </Button>

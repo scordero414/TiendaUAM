@@ -1,7 +1,9 @@
 import { Box, Heading, HStack, Radio, Text, View, VStack } from "native-base";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
+import { useSelector } from "react-redux";
+import { CartItem } from "../../models/cartItem";
 import { COLORS } from "../../resources/Constants";
 
 const Checkout = () => {
@@ -9,6 +11,12 @@ const Checkout = () => {
         isValid: false,
         errors: false,
     });
+
+    const cart: CartItem[]= useSelector((store: any) => store.cart)
+
+    useEffect(() => {
+        console.log(cart.length)
+    }, [])
 
     const onNextStep = () => {
         if (!state.isValid) {

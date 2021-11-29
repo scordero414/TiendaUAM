@@ -62,7 +62,6 @@ const Product = (props) => {
                             <Select
                                 // selectedValue={service}
                                 minWidth="20"
-
                                 accessibilityLabel="Talla"
                                 placeholder="talla"
                                 _selectedItem={{

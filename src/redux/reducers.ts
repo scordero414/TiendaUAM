@@ -12,7 +12,14 @@ const reducer = (state: any, action: any) => {
         case "DELETE_PRODUCT":
             return {
                 ...state,
-                cart: state.cart.filter((item: any) => item.product.id !== action.payload),
+                cart: state.cart.filter(
+                    (item: any) => item.product.id !== action.payload
+                ),
+            };
+        case "UPDATE_PRODUCTS":
+            return {
+                ...state,
+                cart: action.payload,
             };
         case "LOGIN":
             AsyncStorage.setItem(

@@ -1,3 +1,4 @@
+import { CartItem } from "../models/cartItem";
 import { Product } from "../models/Product";
 import { User } from "../models/user";
 
@@ -9,6 +10,11 @@ export const addProductAction = (product: Product, size: string) => ({
 export const deleteProductAction = (productId: string) => ({
   type: "DELETE_PRODUCT",
   payload: productId,
+});
+
+export const updateProductsAction = (products: CartItem[]) => ({
+  type: "UPDATE_PRODUCTS",
+  payload: products,
 });
 
 
