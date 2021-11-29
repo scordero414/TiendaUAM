@@ -1,4 +1,4 @@
-import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Text, View, VStack } from "native-base";
+import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Text, useToast, View, VStack } from "native-base";
 import React, { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,12 +13,25 @@ const Product = (props) => {
     const [size, setSize] = useState("")
     const dispatch = useDispatch()
 
+    const toast = useToast()
+
     useEffect(() => {
         // product.size.forEach(item => {
         //     console.log(item.size)
         // })
     }, [])
 
+
+    const addProduct = () => {
+        dispatch(addProductAction(product, size))
+        toast.show({
+            title: "Producto agregado",
+            status: "success",
+            description: "¡Revisa tu carrito de compras!",
+            placement: "top",
+        })
+
+    }
     return (
         <View bgColor={COLORS.DARK_WHITE} >
 
@@ -30,7 +43,6 @@ const Product = (props) => {
                 )}
                 scrollEventThrottle={16}
             >
-
                 <View style={styles.bannerContainer}>
 
                     <Animated.Image
@@ -120,7 +132,7 @@ const Product = (props) => {
                         <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
                         <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
                     </VStack>
-                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757'}} onPress={() => dispatch(addProductAction(product, size))}> AGREGAR</Button>
+                    <Button variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757' }} onPress={() => addProduct()}> AGREGAR</Button>
                 </HStack>
             </Box>
         </View>
