@@ -26,15 +26,6 @@ const MyTabs = () => {
                     tabBarIcon: () => <HomePageIcon />,
                 })}
             />
-            {/* <Tab.Screen
-        name="ShoppingCart"
-        component={ShoppingCart}
-        options={() => ({
-          tabBarShowLabel: false,
-          tabBarIcon: () => <ShoppingCartIcon />,
-        })}
-      /> */}
-
             <Tab.Screen
                 name="ShoppingCart"
                 component={Cart}
