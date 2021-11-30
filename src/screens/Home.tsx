@@ -34,7 +34,7 @@ export const Home = (props: Props) => {
 
   useEffect(() => {
     LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
-    getProducts().then((products) => setProducts(products));
+    getProducts().then((products) => setProducts(products));    
   }, []);
 
   return (

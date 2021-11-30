@@ -17,7 +17,7 @@ const Checkout = () => {
     const cart: CartItem[]= useSelector((store: any) => store.cart)
 
     useEffect(() => {
-        console.log(cart.length)
+        console.log("Carrito: " + cart.length)
     }, [])
 
     const onNextStep = () => {

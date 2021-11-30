@@ -12,7 +12,7 @@ import {
     Badge,
 } from "native-base";
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { LogBox, StyleSheet } from "react-native";
 import InputSpinner from "react-native-input-spinner";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SwipeListView } from "react-native-swipe-list-view";
@@ -25,6 +25,8 @@ import { Props } from "../../models/props";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProductAction, updateProductsAction } from "../../redux/actions";
 import { CartItem } from "../../models/cartItem";
+LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+
 
 export const Cart = (props: Props) => {
     const [products, setProducts] = useState<any>(null);
@@ -33,10 +35,7 @@ export const Cart = (props: Props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        console.log(cart.length);
-        setProducts(
-            cart.map((_: CartItem, i: number) => ({ ..._, key: `${i}` }))
-        );
+        setProducts(cart);
     }, [cart]);
 
     const updateQuantityHandler = (product: Product) => {
@@ -51,16 +50,10 @@ export const Cart = (props: Props) => {
 
     const deleteRow = (rowMap: any, rowKey: any, id: string) => {
         closeRow(rowMap, rowKey);
-        const newData = [...products];
-        const prevIndex = products.findIndex(
-            (item: any) => item.key === rowKey
-        );
-        newData.splice(prevIndex, 1);
-        setProducts(newData);
+        dispatch(deleteProductAction(id));
     };
 
-    const goCheckout = () => {
-        dispatch(updateProductsAction(products));
+    const goCheckout = () => {        
         props.navigation.navigate("Checkout");
     };
 
@@ -68,6 +61,7 @@ export const Cart = (props: Props) => {
         return (
             <SwipeListView
                 data={productsData}
+                keyExtractor={(item: any) => item.product.id}
                 contentContainerStyle={{
                     marginTop: 12,
                     paddingHorizontal: 24,
@@ -97,7 +91,7 @@ export const Cart = (props: Props) => {
                                         {data.item.product.name}
                                     </Text>
                                     <HStack mb={3} justifyContent="space-between">
-                                        <Text color={COLORS.BLUE}  bold>
+                                        <Text color={COLORS.BLUE} bold>
                                             $ {data.item.product.price}
                                         </Text>
                                         <Badge alignSelf="flex-end" colorScheme="info">{data.item.size}</Badge>
