@@ -23,7 +23,7 @@ import { COLORS } from "../../resources/Constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Props } from "../../models/props";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteProductAction, updateProductsAction } from "../../redux/actions";
+import { deleteProductAction, updateProductAction, updateProductsAction } from "../../redux/actions";
 import { CartItem } from "../../models/cartItem";
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
@@ -37,8 +37,11 @@ export const Cart = (props: Props) => {
         setProducts(cart); 
     }, [cart]);
 
-    const updateQuantityHandler = (product: Product) => {
+    const updateQuantityHandler = (product: any, num: number) => {
         // Actualizar el carrito
+        product = {...product, quantity: num};
+        dispatch(updateProductAction(product))
+
     };
 
     const closeRow = (rowMap: any, rowKey: any) => {
@@ -56,10 +59,7 @@ export const Cart = (props: Props) => {
         props.navigation.navigate("Checkout");
     };
 
-    const getAmount = (product: any) => {
-        getAmountOfProductsByStock(product).then((arr: any) => console.log(arr))
-        return 1;
-    }
+
 
     const renderCartList = (productsData: CartItem[]) => {
         return (
@@ -123,8 +123,8 @@ export const Cart = (props: Props) => {
                                         value={1}
                                         rounded={false}
                                         showBorder={true}
-                                        onChange={() =>
-                                            updateQuantityHandler(data.item)
+                                        onChange={(num: number) =>
+                                            updateQuantityHandler(data.item, num)
                                         }
                                     />
                                 </VStack>

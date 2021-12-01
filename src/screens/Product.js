@@ -47,7 +47,7 @@ const Product = (props) => {
         let currentProduct = filteredProducts.filter(product => product.color === color)[0];
         currentProduct = {...currentProduct, idParent: product.id,  name: product.name};
         const stock = await getAmountOfProductsByStock(currentProduct);
-        currentProduct = {...currentProduct, stock: stock.length}
+        currentProduct = {...currentProduct, stock: stock.length, quantity: 1}
 
         const exits = cart.find(product => (product.name === currentProduct.name && product.size === currentProduct.size && product.color === currentProduct.color))
 

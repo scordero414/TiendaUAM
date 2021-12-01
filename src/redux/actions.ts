@@ -17,6 +17,10 @@ export const updateProductsAction = (products: CartItem[]) => ({
     payload: products,
 });
 
+export const updateProductAction = (product: any) => ({
+    type: "UPDATE_PRODUCT",
+    payload: product,
+});
 
 export const login = (user: User) => ({
     type: "LOGIN",

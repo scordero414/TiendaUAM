@@ -41,9 +41,11 @@ export const getAmountOfProductsByStock = async (product: any) => {
         .where("size", "==", `${product.size}`)
         .where("color", "==", `${product.color}`)
         .get();
-    const arr = docs.map((item: any) => ({ id: item.id, ...item.data() }));
+    const arr = docs.map((item: any) => ({ id: item.id, ...item.data(), name: product.name, idParent: product.idParent}));
     return arr;
 };
+
+
 
 export const createProduct = () => {
     const product1: Product = {
@@ -52,18 +54,18 @@ export const createProduct = () => {
         description:
             "qweqweqweqweqeqwewqqqqqqqqweqweqweqweqweqweqweqweqweqweqweqweqweqqweqwe",
         image: "https://static.dafiti.com.co/p/gap-5263-4066221-1-product.jpg",
-        price: 1750000,
+        price: 120000,
         createdAt: new Date(),
         id: "OGtRtJBM8PYIGQRFqeqY",
     };
 
     const product2: Product = {
-        name: "Hoodie UAM",
+        name: "Camiseta UAM",
         category: ["ropa", "camiseta"],
         description:
             "qweqweqweqweqeqwewqqqqqqqqweqweqweqweqweqweqweqweqweqweqweqweqweqqweqwe",
         image: "https://static.dafiti.com.co/p/lacoste-9129-5885531-1-product.jpg",
-        price: 1750000,
+        price: 90000,
         createdAt: new Date(),
         id: "F9gOAlK44CFcP8BwoDz1",
     };
@@ -74,7 +76,7 @@ export const createProduct = () => {
         description:
             "qweqweqweqweqeqwewqqqqqqqqweqweqweqweqweqweqweqweqweqweqweqweqweqqweqwe",
         image: "https://static.dafiti.com.co/p/nautica-3232-4848601-1-product.jpg",
-        price: 1750000,
+        price: 100000,
         createdAt: new Date(),
         id: "c5QNN7U7khMk44tZN4u4",
     };
@@ -85,7 +87,7 @@ export const createProduct = () => {
         description:
             "qweqweqweqweqeqwewqqqqqqqqweqweqweqweqweqweqweqweqweqweqweqweqweqqweqwe",
         image: "https://static.dafiti.com.co/p/calvin-klein-9676-0602701-1-product.jpg",
-        price: 75000,
+        price: 110000,
         createdAt: new Date(),
         id: "tQLMywTwUvGHVChQSRxK",
     };
@@ -93,7 +95,7 @@ export const createProduct = () => {
     const specificProduct1: SpecificProduct = {
         color: "Rojo",
         image: "https://static.dafiti.com.co/p/gap-5263-4066221-1-product.jpg",
-        price: 175000,
+        price: 120000,
         state: "Avaliable",
         size: "L",
     };
@@ -101,7 +103,7 @@ export const createProduct = () => {
     const specificProduct2: SpecificProduct = {
         color: "Negro",
         image: "https://static.dafiti.com.co/p/lacoste-9129-5885531-1-product.jpg",
-        price: 1750000,
+        price: 90000,
         state: "Avaliable",
         size: "XL",
     };
@@ -109,17 +111,17 @@ export const createProduct = () => {
     const specificProduct3: SpecificProduct = {
         color: "Azul Oscuro",
         image: "https://static.dafiti.com.co/p/nautica-3232-4848601-1-product.jpg",
-        price: 1750000,
+        price: 100000,
         state: "Avaliable",
-        size: "XL",
+        size: "L",
     };
 
     const specificProduct4: SpecificProduct = {
         color: "Azul claro",
         image: "https://static.dafiti.com.co/p/calvin-klein-9676-0602701-1-product.jpg",
-        price: 75000,
+        price: 110000,
         state: "Avaliable",
-        size: "S",
+        size: "M",
     };
 
     createSpecificProductsByIdGeneric(product4.id, 5, specificProduct4);

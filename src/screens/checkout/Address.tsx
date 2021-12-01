@@ -13,6 +13,7 @@ const Address = () => {
           onChange={setIsChecked}
           isChecked={isChecked}
           colorScheme="yellow"
+          aria-label="2"
         />
         <Text marginLeft={2}>
           La dirección de facturación es la misma que la dirección de entrega.
