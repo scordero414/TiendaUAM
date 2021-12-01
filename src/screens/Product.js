@@ -2,36 +2,75 @@ import { Box, Button, CheckIcon, Heading, HStack, IconButton, Image, Select, Tex
 import React, { useEffect, useRef, useState } from "react";
 import { Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getAmountOfProductsByStock, getSellableProducts } from "../models/product";
 import { Props } from "../models/props";
 import { addProductAction } from "../redux/actions";
 import { COLORS } from "../resources/Constants";
 
 const Product = (props) => {
     const [product, setProduct] = useState(props.route.params);
+    const [sellableProducts, setSellableProducts] = useState([])
+    const [filteredProducts, setFilteredProducts] = useState([]);
+    const [sizes, setSizes] = useState([])
+    const [colors, setColors] = useState([])
     const scrollA = useRef(new Animated.Value(0)).current;
     const [size, setSize] = useState("")
+    const [color, setColor] = useState("")
     const dispatch = useDispatch()
+    const cart = useSelector((store) => store.cart);
 
     const toast = useToast()
 
     useEffect(() => {
-        // product.size.forEach(item => {
-        //     console.log(item.size)
-        // })
+        getSellableProducts(product.id).then((arr) => setSellableProducts(arr))
     }, [])
 
+    useEffect(() => {
+        console.log(sellableProducts.length)
+        const sizes = Array.from(new Set(sellableProducts.map((product) => product.size))).sort().reverse();
+        
+        setSizes(sizes);
+        setColors(colors);
 
-    const addProduct = () => {
-        dispatch(addProductAction(product, size))
+    }, [sellableProducts])
+
+
+    useEffect(() => {
+        setColors(Array.from(new Set(filteredProducts.map((product) => product.color))).sort())
+        console.log("Filtered Products by size: ", filteredProducts.length)
+    }, [filteredProducts])
+
+    const addProduct = async () => {
+
+        
+        let currentProduct = filteredProducts.filter(product => product.color === color)[0];
+        currentProduct = {...currentProduct, idParent: product.id,  name: product.name};
+        const stock = await getAmountOfProductsByStock(currentProduct);
+        currentProduct = {...currentProduct, stock: stock.length}
+
+        const exits = cart.find(product => (product.name === currentProduct.name && product.size === currentProduct.size && product.color === currentProduct.color))
+
+        !exits && dispatch(addProductAction(currentProduct))
+
         toast.show({
-            title: "Producto agregado",
-            status: "success",
+            title: !exits ? "Producto agregado" : "El producto ya está en tu carrito",
+            status:  !exits ? "success" : "warning",
             description: "¡Revisa tu carrito de compras!",
             placement: "top",
         })
     }
-    
+
+    const filterSizes = (size) => {
+        setSize(size)
+        setFilteredProducts(sellableProducts.filter(product => product.size === size))
+    }
+
+    const filterColor = (color) => {
+        setColor(color)
+        setProduct({...product, image: filteredProducts.filter(product => product.color === color)[0].image})
+    }
+
     return (
         <View bgColor={COLORS.DARK_WHITE} >
 
@@ -72,20 +111,14 @@ const Product = (props) => {
                                     endIcon: <CheckIcon size="5" />,
                                 }}
                                 mt={1}
-                                onValueChange={(itemValue) => setSize(itemValue)}
+                                onValueChange={(itemValue) => filterSizes(itemValue)}
                             >
 
-                                {/* {
-                                    product.size.forEach(item => 
-                                        (<Select.Item label={item.size} value={item.size} />)
+                                {
+                                    sizes && sizes.map(item =>
+                                        <Select.Item label={item} value={item} key={item}/>
                                     )
-                                } */}
-
-                                <Select.Item label={"XS"} value={"XS"} />
-                                <Select.Item label={"S"} value={"S"} />
-                                <Select.Item label={"M"} value={"M"} />
-                                <Select.Item label={"L"} value={"L"} />
-                                <Select.Item label={"XL"} value={"XL"} />
+                                }
 
                             </Select>
                         </HStack>
@@ -94,6 +127,7 @@ const Product = (props) => {
                             <Text fontSize="lg" >Color</Text>
                             <Select
                                 selectedValue={product.color}
+                                isDisabled={size ? false : true}
                                 justifyContent="space-between"
                                 minWidth="30%"
                                 accessibilityLabel="Color"
@@ -107,9 +141,13 @@ const Product = (props) => {
 
                                 }}
                                 mt={1}
-                            // onValueChange={(itemValue) => setService(itemValue)}
+                                onValueChange={(itemValue) => filterColor(itemValue)}
                             >
-                                <Select.Item label={product.color} value={product.color} />
+                                {
+                                    colors && colors.map(item =>
+                                        <Select.Item label={item} value={item} key={item}/>
+                                    )
+                                }
                             </Select>
                         </HStack>
 
@@ -131,7 +169,7 @@ const Product = (props) => {
                         <Text color={COLORS.GRAY} fontSize="md" >PRECIO</Text>
                         <Text bold color={COLORS.BLUE} fontSize="lg">$ {product.price}</Text>
                     </VStack>
-                    <Button isDisabled={size?false:true}  variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757' }} onPress={() => addProduct()}> AGREGAR</Button>
+                    <Button isDisabled={size && color ? false : true} variant="solid" colorScheme="yellow" bgColor={COLORS.YELLOW} px={10} _text={{ color: '#575757' }} onPress={() => addProduct()}> AGREGAR</Button>
                 </HStack>
             </Box>
         </View>

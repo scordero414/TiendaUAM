@@ -18,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { ShoeIcon } from "../../assets/icons/CategoriesIcons";
 import { FooterTotal } from "../../components/FooterTotal";
-import { getProducts, Product } from "../../models/product";
+import { getAmountOfProductsByStock, getProducts, Product } from "../../models/product";
 import { COLORS } from "../../resources/Constants";
 import { AntDesign } from "@expo/vector-icons";
 import { Props } from "../../models/props";
@@ -27,7 +27,6 @@ import { deleteProductAction, updateProductsAction } from "../../redux/actions";
 import { CartItem } from "../../models/cartItem";
 LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
 
-
 export const Cart = (props: Props) => {
     const [products, setProducts] = useState<any>(null);
 
@@ -35,7 +34,7 @@ export const Cart = (props: Props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        setProducts(cart);
+        setProducts(cart); 
     }, [cart]);
 
     const updateQuantityHandler = (product: Product) => {
@@ -53,15 +52,20 @@ export const Cart = (props: Props) => {
         dispatch(deleteProductAction(id));
     };
 
-    const goCheckout = () => {        
+    const goCheckout = () => {
         props.navigation.navigate("Checkout");
     };
+
+    const getAmount = (product: any) => {
+        getAmountOfProductsByStock(product).then((arr: any) => console.log(arr))
+        return 1;
+    }
 
     const renderCartList = (productsData: CartItem[]) => {
         return (
             <SwipeListView
                 data={productsData}
-                keyExtractor={(item: any) => item.product.id}
+                keyExtractor={(item: any) => item.id}
                 contentContainerStyle={{
                     marginTop: 12,
                     paddingHorizontal: 24,
@@ -79,34 +83,44 @@ export const Cart = (props: Props) => {
                         <View justifyContent="center">
                             <HStack space={5}>
                                 <Image
-                                    source={{ uri: data.item.product.image }}
+                                    source={{ uri: data.item.image }}
                                     size="xl"
                                     resizeMode="contain"
                                     alignSelf="center"
                                     alt="img-product"
                                 />
-                                {/* <Text>{data.item.product.image}</Text> */}
+                                {/* <Text>{data.item.image}</Text> */}
                                 <VStack justifyContent="center">
                                     <Text color={COLORS.BLACK}>
-                                        {data.item.product.name}
+                                        {data.item.name} {data.item.color}
                                     </Text>
-                                    <HStack mb={3} justifyContent="space-between">
+                                    <HStack
+                                        // bgColor={COLORS.YELLOW}
+                                        mb={3}
+                                        justifyContent="space-between"
+                                        width="60%"
+                                    >
                                         <Text color={COLORS.BLUE} bold>
-                                            $ {data.item.product.price}
+                                            $ {data.item.price}
                                         </Text>
-                                        <Badge alignSelf="flex-end" colorScheme="info">{data.item.size}</Badge>
+                                        <Badge
+                                            colorScheme="info"
+                                        >
+                                            {data.item.size}
+                                        </Badge>
+                                        
                                     </HStack>
                                     <InputSpinner
                                         skin="clean"
                                         height={30}
                                         width={110}
-                                        max={5}
+                                        max={data.item.stock}
                                         min={1}
                                         step={1}
                                         color={"#DDD"}
                                         colorMax={"#f04048"}
-                                        colorMin={"#40c5f4"}
-                                        value={2}
+                                        // colorMin={"#40c5f4"}
+                                        value={1}
                                         rounded={false}
                                         showBorder={true}
                                         onChange={() =>
@@ -137,12 +151,8 @@ export const Cart = (props: Props) => {
                                 />
                             }
                             onPress={() => {
-                                deleteRow(
-                                    rowMap,
-                                    data.item.key,
-                                    data.item.product.id
-                                );
-                                // removeItemHanlder(data.item.product.id);
+                                deleteRow(rowMap, data.item.key, data.item.id);
+                                // removeItemHanlder(data.item.id);
                             }}
                         />
                     </View>

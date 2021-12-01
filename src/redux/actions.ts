@@ -1,10 +1,10 @@
 import { CartItem } from "../models/cartItem";
-import { Product } from "../models/product";
+import { Product, SpecificProduct } from "../models/product";
 import { User } from "../models/user";
 
-export const addProductAction = (product: Product, size: string) => ({
+export const addProductAction = (product: any) => ({
     type: "ADD_PRODUCT",
-    payload: { product: product, size: size },
+    payload: product,
 });
 
 export const deleteProductAction = (productId: string) => ({
