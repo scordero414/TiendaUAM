@@ -53,7 +53,7 @@ const Checkout = () => {
         },
     };
     return (
-        <View flex={1} bg={COLORS.WHITE} pt={10}>
+        <View flex={1} bg={COLORS.WHITE} >
             <ProgressSteps {...progressSteps}>
                 <ProgressStep label="Envío" {...firstProgressStep}>
                     <View style={{ alignItems: "center" }}>
@@ -99,14 +99,10 @@ const Checkout = () => {
           </View>
         </ProgressStep>
         <ProgressStep label="Dirección" {...progressStep}>
-          <View style={{ alignItems: "center" }}>
             <Address />
-          </View>
         </ProgressStep>
         <ProgressStep label="Pago" {...progressStep}>
-          <View style={{ alignItems: "center" }}>
             <Payment />
-          </View>
         </ProgressStep>
       </ProgressSteps>
     </View>

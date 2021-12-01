@@ -7,27 +7,27 @@ import WalletIcon from "../../assets/icons/WalletIcon";
 
 const Payment = () => {
   return (
-    <View>
-      <View flexDirection="row" justifyContent="space-between">
+    <View flex={1}  mx={5}>
+      <View flexDirection="row" justifyContent="space-between" mx={10}>
         <IconButton
           colorScheme="grey"
           borderColor="grey"
           variant="outline"
-          padding="8"
+          padding="6"
           icon={<PayPalIcon />}
         />
         <IconButton
           colorScheme="grey"
           borderColor="grey"
           variant="outline"
-          padding="8"
+          padding="6"
           icon={<CardIcon />}
         />
         <IconButton
           colorScheme="grey"
           borderColor="grey"
           variant="outline"
-          padding="8"
+          padding="6"
           icon={<WalletIcon />}
         />
       </View>
