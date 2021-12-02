@@ -6,7 +6,7 @@ import { ProgressSteps, ProgressStep } from "react-native-progress-steps";
 import { useSelector } from "react-redux";
 import { CartItem } from "../../models/cartItem";
 import { createOrder } from "../../models/order";
-import { getAmountOfProductsByStock } from "../../models/product";
+import { getAmountOfProductsByStock, modifyProductsState } from "../../models/product";
 import { COLORS } from "../../resources/Constants";
 import Address from "./Address";
 import Payment from "./Payment";
@@ -40,6 +40,7 @@ const Checkout = () => {
 
     useEffect(() => {
         createOrder(order);
+        order.products && modifyProductsState(allProducts);
     }, [order])
 
 
@@ -89,9 +90,7 @@ const Checkout = () => {
             getAmountOfProductsByStock(product).then((products: any) => {
                 setAllProducts((oldProducts: any) => [...oldProducts, ...products.slice(0, product.quantity)]);
             });
-            // setAllProducts(...allProducts , ...products.slice(product.quantity))
-        })
-        // const wqd = await getAmountOfProductsByStock()
+        })        
 
     };
 

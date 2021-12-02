@@ -47,6 +47,20 @@ export const getAmountOfProductsByStock = async (product: any) => {
 
 
 
+export const modifyProductsState = (products: any) => {
+    const batch = store.batch();
+    products.forEach((product: any) => {
+        let ref = store.collection(`/products/${product.idParent}/sellable_products`).doc(product.id);
+        batch.update(ref, {"state": "Sold"})
+    });
+
+    batch.commit().then(() => {
+        console.log("Productos modificados");
+    });
+
+}
+
+
 export const createProduct = () => {
     const product1: Product = {
         name: "Hoodie UAM",
